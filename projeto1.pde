@@ -1,5 +1,5 @@
 final int n_points = 25; //<>//
-final int n_discs = 1;
+final int n_discs = 5;
 final float disc_radius = 80;
 
 Disc[] discs;
