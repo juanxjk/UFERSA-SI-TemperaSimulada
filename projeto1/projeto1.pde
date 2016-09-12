@@ -1,4 +1,4 @@
-final int n_points = 25; //<>// //<>//
+final int n_points = 50; //<>// //<>//
 final int n_discs = 5;
 final float disc_radius = 80;
 
@@ -33,8 +33,20 @@ void draw() {
 //////////////////////////TEMPERA SIMULADA//////////////////////////
 int t=0;
 void temperaSimulada() {
-  t++;
-  
+  int T = ++t;
+  int goal = goal();
+  randomPositions();
+  //if(isThereColisions()) resetPositions();
+  int deltaE = goal() - goal;
+
+  if(deltaE<0){
+    if(!(1-(P(T, deltaE))>random(0,1))) resetPositions();
+  }
+  println("goal: "+goal+ " P:"+(1-P(T, deltaE)));
+}
+
+float P(int T, int deltaE){
+ return exp(deltaE/T); 
 }
 
 int goal()
@@ -84,8 +96,15 @@ void keyPressed() {
 
 void randomPositions() {
   for (int i=0; i<discs.length; i++) {
+    discs[i].setPPositions();
     discs[i].setX(random(0, width));
     discs[i].setY(random(0, height));
+  }
+}
+
+void resetPositions() {
+  for (int i=0; i<discs.length; i++) {
+    discs[i].resetPosition();
   }
 }
 

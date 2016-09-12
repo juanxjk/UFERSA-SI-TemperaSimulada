@@ -1,6 +1,8 @@
 class Disc {
   float x;
   float y;
+  float pX;
+  float pY;
 
   Disc(float x_, float y_) {
     x = x_;
@@ -28,5 +30,14 @@ class Disc {
     float distance = dist(x,y,d.x,d.y);
     if(distance < 2*disc_radius) return true;
     return false; 
+  }
+  void resetPosition(){
+   x = pX;
+   y = pY;
+  }
+  
+  void setPPositions(){
+   pX = x;
+   pY = y;
   }
 }
