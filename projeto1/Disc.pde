@@ -1,8 +1,7 @@
 class Disc {
-  float x;
-  float y;
-  float pX;
-  float pY;
+  private float x;
+  private float y;
+
 
   Disc(float x_, float y_) {
     x = x_;
@@ -13,7 +12,7 @@ class Disc {
     fill(127, 0, 0, 100);
     ellipse(x, y, 2*disc_radius, 2*disc_radius);
   }
-  
+
   void setX(float x_) {
     x = x_;
   }
@@ -22,22 +21,26 @@ class Disc {
     y = y_;
   }
 
+  float getX() {
+    return this.x;
+  }
+  
+  float getY() {
+    return this.y;
+  }
+
+  void setPos(float x, float y) {
+    this.x = x;
+    this.y = y;
+  }
+
   boolean cover(Point p) {
     if (dist(p.x, p.y, x, y) <= disc_radius) return true;
     return false;
   }
-  boolean colides(Disc d){
-    float distance = dist(x,y,d.x,d.y);
-    if(distance < 2*disc_radius) return true;
-    return false; 
-  }
-  void resetPosition(){
-   x = pX;
-   y = pY;
-  }
-  
-  void setPPositions(){
-   pX = x;
-   pY = y;
+  boolean colides(Disc d) {
+    float distance = dist(x, y, d.x, d.y);
+    if (distance < 2*disc_radius) return true;
+    return false;
   }
 }

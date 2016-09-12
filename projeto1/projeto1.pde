@@ -1,23 +1,26 @@
-final int n_points = 50; //<>// //<>//
-final int n_discs = 5;
+final int n_points = 200; //<>// //<>//
+final int n_discs = 16;
 final float disc_radius = 80;
 
 Disc[] discs;
+Disc[] discs2;
 Point[] points;
+
 
 ////////////////////////////////////////////////////////////////////
 void setup() {
 
-  size(800, 600);
+  size(640, 480);
   discs = new Disc[n_discs];
   points = new Point[n_points];
-
+  discs2 = new Disc[n_points];
   for (int i = 0; i < n_points; i++) {
     points[i] = new Point(random(0, width), random(0, height));
   }
 
   for (int i = 0; i < n_discs; i++) {
     discs[i] = new Disc(random(0, width), random(0, height));
+    discs2[i] = new Disc(0, 0);
   }
 }
 
@@ -31,32 +34,45 @@ void draw() {
   text("Sistemas Inteligentes - Projeto - 2ª Unidade", 50, 50);
 }
 //////////////////////////TEMPERA SIMULADA//////////////////////////
-int t=0;
+//int t=0;
+float T = 10000;
 void temperaSimulada() {
-  int T = ++t;
-  int goal = goal();
-  randomPositions();
-  //if(isThereColisions()) resetPositions();
-  int deltaE = goal() - goal;
+  if (goal(discs)==n_points) return;
+  for (int i=0; i<10000; i++) {
+    //if(isThereColisions()) resetPositions();
+    oneRandomPosition();
+    int deltaE = goal(discs2) - goal(discs);
+    if (deltaE>0) {
+      swap();
+    } else {
+      float p = P(deltaE);
+      float x = random(0, 1);
+      if (x<=p) swap();
+    }
 
-  if(deltaE<0){
-    if(!(1-(P(T, deltaE))>random(0,1))) resetPositions();
+    println("T: " + T + " Goal: " + goal(discs) + " P:" + (P(deltaE)));
   }
-  println("goal: "+goal+ " P:"+(1-P(T, deltaE)));
 }
 
-float P(int T, int deltaE){
- return exp(deltaE/T); 
+void swap() {
+  for (int i=0; i<n_discs; i++) {
+    discs[i] = discs2[i];
+  }
 }
 
-int goal()
+float P(int deltaE) {
+  T=0.99*T;
+  return exp(deltaE/T);
+}
+
+int goal(Disc[] _discs)
 {
   int count = 0;
   for (int i = 0; i < n_points; i++) {
     for (int j = 0; j < n_discs; j++)
-      if (discs[j].cover(points[i])) {
+      if (_discs[j].cover(points[i])) {
         count++;
-        break; //???????????????????????
+        break;
       }
   }
   return count;
@@ -74,8 +90,24 @@ void draw_discs()
     discs[i].draw();
 }
 
+///////////////////////////////////////////////////////////////
 
-//////////////////////////JUAN/////////////////////////////////////
+void randomPosition() {
+  for (int i=0; i<discs.length; i++) {
+    discs2[i].setPos(random(0, width), random(0, height));
+  }
+}
+void oneRandomPosition() {
+  for (int i=0; i<discs.length; i++) {
+    discs2[i].setPos(discs[i].x, discs[i].y);
+  }
+  int i = (int) random(0, n_discs);
+  discs2[i] = new Disc(random(0, width), random(0, height));
+}
+
+
+
+//////////////////////////JUAN//////////////////////////////////
 
 
 void keyPressed() {
@@ -85,28 +117,21 @@ void keyPressed() {
 
   if (key=='r') 
   {
-    randomPositions();
+    randomPosition();
     //while (isThereColisions() && !isALLThereCover()) randomPositions();
     //while (isThereColisions() || !isALLThereCover()) randomPositions();
-    while(!isALLThereCover()) randomPositions();
+    while (!isALLThereCover()) randomPosition();
   }
-  if (key=='p') clear(); //Clear screen - reset
-  println(goal());
+  if (key == 'p') {
+    for (int i=0; i<points.length; i++) {
+      points[i].setPos(random(0, width), random(0, height));
+    }
+  }
+
+  if (key == ' ') T = 1000;
 }
 
-void randomPositions() {
-  for (int i=0; i<discs.length; i++) {
-    discs[i].setPPositions();
-    discs[i].setX(random(0, width));
-    discs[i].setY(random(0, height));
-  }
-}
 
-void resetPositions() {
-  for (int i=0; i<discs.length; i++) {
-    discs[i].resetPosition();
-  }
-}
 
 
 void mouseClicked() {
@@ -155,7 +180,7 @@ boolean isALLThereCover() {
         break;
       }
     }
-    if(!hasCover) return false;
+    if (!hasCover) return false;
   }
   return true;
 }
