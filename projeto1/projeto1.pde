@@ -1,4 +1,4 @@
-final int n_points = 25; //<>//
+final int n_points = 25; //<>// //<>//
 final int n_discs = 5;
 final float disc_radius = 80;
 
@@ -34,7 +34,7 @@ void draw() {
 int t=0;
 void temperaSimulada() {
   t++;
-  //////////////////////////ENTIDADES////////////////////////////////
+  
 }
 
 int goal()
@@ -75,7 +75,8 @@ void keyPressed() {
   {
     randomPositions();
     //while (isThereColisions() && !isALLThereCover()) randomPositions();
-    while (isThereColisions() || !isALLThereCover()) randomPositions();
+    //while (isThereColisions() || !isALLThereCover()) randomPositions();
+    while(!isALLThereCover()) randomPositions();
   }
   if (key=='p') clear(); //Clear screen - reset
   println(goal());
