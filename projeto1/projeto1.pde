@@ -1,4 +1,4 @@
-final int n_points = 200; //<>// //<>//
+final int n_points = 200; //<>//
 final int n_discs = 16;
 final float disc_radius = 80;
 
@@ -7,7 +7,7 @@ Disc[] discs2;
 Point[] points;
 
 
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 void setup() {
 
   size(640, 480);
@@ -33,12 +33,12 @@ void draw() {
   textSize(16);
   text("Sistemas Inteligentes - Projeto - 2ª Unidade", 50, 50);
 }
-//////////////////////////TEMPERA SIMULADA//////////////////////////
-//int t=0;
+//////////////////////////TÊMPERA SIMULADA//////////////////////////////////////
+
 float T = 10000;
 void temperaSimulada() {
   if (goal(discs)==n_points) return;
-  for (int i=0; i<10000; i++) {
+  for (int i=0; i<100; i++) {
     //if(isThereColisions()) resetPositions();
     oneRandomPosition();
     int deltaE = goal(discs2) - goal(discs);
@@ -90,7 +90,7 @@ void draw_discs()
     discs[i].draw();
 }
 
-///////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 void randomPosition() {
   for (int i=0; i<discs.length; i++) {
@@ -105,10 +105,7 @@ void oneRandomPosition() {
   discs2[i] = new Disc(random(0, width), random(0, height));
 }
 
-
-
-//////////////////////////JUAN//////////////////////////////////
-
+///////////////////////ESSA PARTE PODE SER DESCOSIDERADA////////////////////////
 
 void keyPressed() {
   println("Tecla "+ key +" pressionada.");
@@ -118,9 +115,7 @@ void keyPressed() {
   if (key=='r') 
   {
     randomPosition();
-    //while (isThereColisions() && !isALLThereCover()) randomPositions();
-    //while (isThereColisions() || !isALLThereCover()) randomPositions();
-    while (!isALLThereCover()) randomPosition();
+    swap();
   }
   if (key == 'p') {
     for (int i=0; i<points.length; i++) {
@@ -132,11 +127,11 @@ void keyPressed() {
 }
 
 
-
-
 void mouseClicked() {
 }
-//COLISÕES
+
+/////COLISÕES
+
 boolean isThereColisions() {
 
   for (int i = 0; i<discs.length; i++) {
@@ -160,7 +155,7 @@ boolean isALLColisions() {
   return true;
 }
 
-//COVER
+/////COVER
 boolean isThereCover() {
   for (int i = 0; i<discs.length; i++) {
     for (int j = 0; j<points.length; j++) {
